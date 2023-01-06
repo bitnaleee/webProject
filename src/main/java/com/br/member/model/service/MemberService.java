@@ -42,6 +42,68 @@ public class MemberService {
 		
 	}
 	
+	public Member updateMember(Member m ) {
+		Connection conn = getConnection();
+		
+		new MemberDao().updateMember(conn, m);
+		
+		int result = new MemberDao().updateMember(conn, m);
+		
+		Member updateMem = null;
+		if(result > 0) {
+			commit(conn);
+			// 갱신된 회원 객체 다시 조회해오기 => 세션에 담긴 회원객체를 갱신시켜야되기 때문
+			updateMem = new MemberDao().selectMember(conn, m.getUserId());
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return updateMem;
+		
+	}
+	
+	public Member updatePwdMember(String userId, String userPwd, String updatePwd) {
+		
+		Connection conn = getConnection();
+		int result = new MemberDao().updatePwdMember(conn, userId, userPwd, updatePwd);
+		
+		Member updateMem = null;
+		if(result > 0) {
+			commit(conn);
+			updateMem = new MemberDao().selectMember(conn, userId);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return updateMem;
+		
+	}
+	
+	public int deleteMember(String userId, String userPwd) {
+		
+		Connection conn = getConnection();
+		int result = new MemberDao().deleteMember(conn, userId, userPwd);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+	
+	}
+	
+	
+	
+	
+	
 	
 	
 }

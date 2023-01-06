@@ -18,6 +18,12 @@
     #mypage-form input {margin:5px;}
 
 </style>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 	<%@ include file="../common/menubar.jsp" %>
@@ -36,7 +42,7 @@
         <br>
         <h2 align="center">마이페이지</h2>
 
-        <form action="" method="post" id="mypage-form">
+        <form action="<%= contextPath %>/update.me" method="post" id="mypage-form">
 
             <table>
                 <tr>
@@ -109,14 +115,108 @@
             <br><br>
 
             <div align="center">
-                <button type="submit">정보변경</button>
-                <button type="button">비밀번호변경</button>
-                <button type="button">회원탈퇴</button>
+                <button type="submit" class="btn btn-secondary btn-sm">정보변경</button>
+                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#updatePwdModal">비밀번호변경</button>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">회원탈퇴</button>
             </div>
             <br><br>
 
         </form>
 
     </div>
+    
+    <!-- 비밀번호 변경용 모달 div -->
+    <!-- The Modal -->
+	<div class="modal" id="updatePwdModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">비밀번호 변경</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body" align="center">
+	       	
+	       	 <form action="<%= contextPath %>/updatePwd.me" method="post">
+	       	 
+	       	 	<input type="hidden" name="userId" value="<%=userId%>">
+	      		
+	      		<table>
+	      			<tr>
+	      				<td>현재 비밀번호</td>
+	      				<td><input type="password" name="userPwd" required></td>
+	      			</tr>
+	      			<tr>
+	      				<td>변경할 비밀번호</td>
+	      				<td><input type="password" name="updatePwd" required></td>
+	      			</tr>
+	      			<tr>
+	      				<td>변경할 비밀번호 확인</td>
+	      				<td><input type="password" required></td>
+	      			</tr>
+	      		</table>
+	      		<br>
+	      		
+	      		<button type="submit" class="btn btn-secondary btn-sm">비밀번호 변경</button>
+	      		
+	         </form>
+
+	      </div>
+	  
+	    </div>  
+	  </div>  
+	</div>
+    <!-- 회원탈퇴용 Modal -->
+     <!-- The Modal -->
+	<div class="modal" id="deleteModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">회원 탈퇴</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body" align="center">
+	       	
+	       	<b>탈퇴 후 복구가 불가능합니다. <br> 정말로 탈퇴하시겠습니까?</b> <br><br>
+	       	
+	       	<form action="<%=contextPath %>/delete.me" method="post">
+	       	
+	       		<input type="hidden" name="userId" value="<%=userId %>">
+	       	
+	       		비밀번호 : <input type="password" name="userPwd" required> <br><br>
+	       		
+	       		<button type="submit" class="btn btn-danger btn-sm">탈퇴하기</button>
+	       		
+	       	<!-- 
+	       		요청시 실행할 sql문
+	       		UPDATE MEMBER
+	       		   SET STAUS = 'N'
+	       		     , MODIFY_DATE = SYSDATE
+	       		 WHERE USER_ID = 현재로그인한 회원아이디
+	       		   AND USER_PWD = 사용자가 입력한 비밀번호
+	       		   
+	       		성공했을경우 => 메인페이지, alert("성공적으로 회원탈퇴되었습니다. 그동안 이용해주셔서 감사합니다.")
+	       					 단, 로그아웃되어있어야됨 (Hint, 세션에 loginUser를 지우기)
+	       		실패했을경우 => 마이페이지, alert(현재 비밀번호를 다시 확인해주세요.)
+	       	 -->
+	       	</form>
+	       	
+	       	
+	      </div>
+	  
+	    </div>  
+	  </div>  
+	</div>
+    
+    
+    
+    
 </body>
 </html>
