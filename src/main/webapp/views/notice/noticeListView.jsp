@@ -80,6 +80,21 @@
             <% } %>
             </tbody>
         </table>
+        
+        <script>
+        	$(function() {
+        		$(".list-area>tbody>tr").click(function() {
+        			
+        			const num = $(this).children().eq(0).text(); // 클릭했을때의 글번호
+        			
+        			// 요청할url?키=밸류&키=밸류...
+        			// 요청시전달값(키=밸류) => 쿼리스트링
+        			
+        			location.href = "<%=contextPath%>/detail.no?no=" + num;
+        			
+        		})
+        	})
+        </script>
 
         <br><br>
 
