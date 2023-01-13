@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.br.board.model.vo.*"%>
+    
+<%
+	Board b = (Board)request.getAttribute("b");
+	// 글번호, 카테고리명, 제목, 내용, 작성자아이디, 작성일
+	Attachment at = (Attachment)request.getAttribute("at");
+	// 첨부파일 없을 경우 null
+	// 첨부파일 있을 경우 파일번호, 원본명, 실제폴더에저장된파일명(수정명), 저장경로
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,32 +47,32 @@
         <table border="1" id="detail-area">
             <tr>
                 <th width="70">카테고리</th>
-                <td width="70">운동</td>
+                <td width="70"><%= b.getCategory() %></td>
                 <th width="70">제목</th>
-                <td width="350">여기는 제목자리</td>
+                <td width="350"><%= b.getBoardTitle() %></td>
             </tr>
             <tr>
                 <th>작성자</th>
-                <td>admin</td>
+                <td><%= b.getBoardWriter() %></td>
                 <th>작성일</th>
-                <td>2023/01/01</td>
+                <td><%= b.getCreateDate() %></td>
             </tr>
             <tr>
                 <th>내용</th>
                 <td colspan="3" height="200">
-                    여기는 내용자리
+                    <%= b.getBoardContent() %>
                 </td>
             </tr>
             <tr>
                 <th>첨부파일</th>
                 <td colspan="3">
-
-                    <!-- case1. 첨부파일 없을 경우 -->
+					<% if(at == null) { %>
+                    	<!-- case1. 첨부파일 없을 경우 -->
                     첨부파일이 없습니다.
-
-                    <!-- case2. 첨부파일 있을 경우 -->
-                    <a href="첨부파일의저장경로, 첨부파일의실제저장된파일명">flower1.jpg</a>
-
+					<% } else { %>
+                    	<!-- case2. 첨부파일 있을 경우 -->
+                    	<a download="<%=at.getOriginName() %>" href="<%= contextPath%>/<%=at.getFilePath() + at.getChangeName()%>"><%= at.getOriginName() %></a>
+					<% } %>
                 </td>
                 <th></th>
                 <td></td>
@@ -72,11 +81,12 @@
         <br>
 
         <div>
-            <a href="" class="btn btn-secondary btn-sm">목록가기</a>
-
-            <a href="" class="btn btn-warning btn-sm">수정하기</a>
+            <a href="<%= contextPath %>/list.bo?cpage=1" class="btn btn-secondary btn-sm">목록가기</a>
+			
+			<% if(loginUser != null && loginUser.getUserId().equals(b.getBoardWriter())) { %>
+            <a href="<%= contextPath %>/updateForm.bo?no=<%= b.getBoardNo() %>" class="btn btn-warning btn-sm">수정하기</a>
             <a href="" class="btn btn-danger btn-sm">삭제하기</a>
-
+			<% } %>
         </div>
 
         <br><br>

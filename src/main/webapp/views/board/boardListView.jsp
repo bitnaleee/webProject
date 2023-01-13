@@ -25,6 +25,12 @@
         border:1px solid white;
         text-align:center;
     }
+    
+    
+    .list-area>tbody>tr:hover {
+       background-color:gray;
+       cursor:pointer;
+    }
 
 </style>
 </head>
