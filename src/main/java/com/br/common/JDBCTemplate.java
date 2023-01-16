@@ -27,7 +27,7 @@ public class JDBCTemplate {
 		
 		try {
 			prop.load(new FileInputStream(filePath));
-			System.out.println("파일 읽어들이기 완료");
+			//System.out.println("파일 읽어들이기 완료");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +43,7 @@ public class JDBCTemplate {
 			conn.setAutoCommit(false);
 			// mac을 쓰는 사람도 있어서 필요한 구문
 			
-			System.out.println("Connection 객체 생성 완료");
+			//System.out.println("Connection 객체 생성 완료");
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
