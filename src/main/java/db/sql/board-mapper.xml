@@ -95,7 +95,7 @@
 	     , USER_ID
 	     , TO_CHAR(CREATE_DATE, 'YYYY/MM/DD') "CREATE_DATE"
 	  FROM BOARD
-	  JOIN CATEGORY USING(CATEGORY_NO)
+	  LEFT JOIN CATEGORY USING(CATEGORY_NO)
 	  JOIN MEMBER ON (BOARD_WRITER = USER_NO)
 	 WHERE BOARD_NO = ?
 	</entry>
@@ -107,6 +107,8 @@
 	     , FILE_PATH
 	  FROM ATTACHMENT
 	 WHERE REF_BNO = ?
+	 ORDER 
+        BY FILE_LEVEL
 	</entry>
 	<entry key="updateBoard">
 	UPDATE 
@@ -142,6 +144,61 @@
 	     , ?
 	     , ?
 	     )
+	</entry>
+	
+	<entry key="insertThBoard">
+	INSERT
+	  INTO BOARD
+	     (
+	       BOARD_NO
+	     , BOARD_TYPE
+	     , BOARD_TITLE
+	     , BOARD_CONTENT
+	     , BOARD_WRITER
+	     )
+	VALUES
+	     ( 
+	       SEQ_BNO.NEXTVAL
+	     , 2
+	     , ?
+	     , ?
+	     , ?
+	     )
+	</entry>
+	<entry key="insertAttachmentList">
+	INSERT
+	  INTO ATTACHMENT
+	     (
+	       FILE_NO
+	     , REF_BNO
+	     , ORIGIN_NAME
+	     , CHANGE_NAME
+	     , FILE_PATH
+	     , FILE_LEVEL
+	     )
+	VALUES
+	     (
+	       SEQ_FNO.NEXTVAL
+	     , SEQ_BNO.CURRVAL
+	     , ?
+	     , ?
+	     , ?
+	     , ?
+	     )
+	</entry>
+	<entry key="selectThumbnailList">
+	SELECT
+	       BOARD_NO
+	     , BOARD_TITLE
+	     , COUNT 
+	     , FILE_PATH || CHANGE_NAME "TITLEIMG"
+	  FROM BOARD B
+	  JOIN ATTACHMENT ON (BOARD_NO = REF_BNO)
+	 WHERE BOARD_TYPE = 2
+	   AND B.STATUS = 'Y'
+	   AND FILE_LEVEL = 1
+	 ORDER 
+	    BY BOARD_NO DESC
 	</entry>
 	
 	

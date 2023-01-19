@@ -11,6 +11,16 @@ public class Board {
 	private int count;
 	private String createDate; // 날짜데이터 Date타입도 되고 String타입도 가능
 	private String status;
+	
+	private String titleImg; // 대표이미지의 경로
+
+	public String getTitleImg() {
+		return titleImg;
+	}
+
+	public void setTitleImg(String titleImg) {
+		this.titleImg = titleImg;
+	}
 
 	public Board() {}
 
