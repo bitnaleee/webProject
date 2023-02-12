@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="com.br.board.model.vo.*"%>
-    
-<%
-	Board b = (Board)request.getAttribute("b");
-	// 글번호, 카테고리명, 제목, 내용, 작성자아이디, 작성일
-	Attachment at = (Attachment)request.getAttribute("at");
-	// 첨부파일 없을 경우 null
-	// 첨부파일 있을 경우 파일번호, 원본명, 실제폴더에저장된파일명(수정명), 저장경로
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -32,7 +25,7 @@
 </head>
 <body>
 
-	<%@ include file="../common/menubar.jsp" %>
+	<jsp:include page="../common/menubar.jsp"/>
 
     <div class="outer" align="center">
         <br>
@@ -42,32 +35,35 @@
         <table border="1" id="detail-area">
             <tr>
                 <th width="70">카테고리</th>
-                <td width="70"><%= b.getCategory() %></td>
+                <td width="70">${ b.category }</td>
                 <th width="70">제목</th>
-                <td width="350"><%= b.getBoardTitle() %></td>
+                <td width="350">${ b.categoryTitle }</td>
             </tr>
             <tr>
                 <th>작성자</th>
-                <td><%= b.getBoardWriter() %></td>
+                <td>${ b.boardWriter }</td>
                 <th>작성일</th>
-                <td><%= b.getCreateDate() %></td>
+                <td>${ b.createDate }</td>
             </tr>
             <tr>
                 <th>내용</th>
                 <td colspan="3" height="200">
-                    <%= b.getBoardContent() %>
+                    ${ b.boardContent }
                 </td>
             </tr>
             <tr>
                 <th>첨부파일</th>
                 <td colspan="3">
-					<% if(at == null) { %>
-                    	<!-- case1. 첨부파일 없을 경우 -->
-                    첨부파일이 없습니다.
-					<% } else { %>
-                    	<!-- case2. 첨부파일 있을 경우 -->
-                    	<a download="<%=at.getOriginName() %>" href="<%= contextPath%>/<%=at.getFilePath() + at.getChangeName()%>"><%= at.getOriginName() %></a>
-					<% } %>
+                	<c:choose>
+                		<c:when test="${ empty at }">
+                			<!-- case1. 첨부파일 없을 경우 -->
+	                        첨부파일이 없습니다.
+	                    </c:when>
+						<c:otherwise>
+	                    	<!-- case2. 첨부파일 있을 경우 -->
+	                    	<a download="${ at.originName }" href="${ at.filePath + at.changeName }">${ at.originName }</a>
+						</c:otherwise>
+					</c:choose>
                 </td>
                 <th></th>
                 <td></td>
@@ -76,12 +72,14 @@
         <br>
 
         <div>
-            <a href="<%= contextPath %>/list.bo?cpage=1" class="btn btn-secondary btn-sm">목록가기</a>
+        
+            <a href="list.bo?cpage=1" class="btn btn-secondary btn-sm">목록가기</a>
 			
-			<% if(loginUser != null && loginUser.getUserId().equals(b.getBoardWriter())) { %>
-            <a href="<%= contextPath %>/updateForm.bo?no=<%= b.getBoardNo() %>" class="btn btn-warning btn-sm">수정하기</a>
+			<c:if test="${ empty loginUser and loginUser.userId eq b.boardWriter }">
+            <a href="updateForm.bo?no=${ b.boardNo }" class="btn btn-warning btn-sm">수정하기</a>
             <a href="" class="btn btn-danger btn-sm">삭제하기</a>
-			<% } %>
+			</c:if>
+			
         </div>
 
         <br>

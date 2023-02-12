@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
-<%--<%@ page import="com.br.notice.model.vo.Notice" %>--%>
-    
-<%-- <%
-	Notice n = (Notice)request.getAttribute("n");
-	// 글번호, 제목, 내용, 작성자아이디, 작성일
-%> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,16 +24,15 @@
 </style>
 </head>
 <body>
-    <%-- <%@ include file="../common/menubar.jsp" %> --%>
+    
 	<jsp:include page="../common/menubar.jsp"/>
 	
 	<div class="outer" align="center">
         <br>
         <h2>공지사항 수정하기</h2>
         <br>
-		<%-- <form action="<%=contextPath%>/update.no" id="update-form" method="post"> --%>
+
         <form action="update.no" id="update-form" method="post">
-        	<%-- <input type="hidden" name="no" value="<%=request.n.getNoticeNo%>"> --%>
         	<input type="hidden" name="no" value="${ n.noticeNo }">
             <table>
                 <tr>
